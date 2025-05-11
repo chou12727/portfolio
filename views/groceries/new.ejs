@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新規登録</title>
+</head>
+<body>
+    <h1>新規登録</h1>
+    <form action="/groceries" method="POST">
+        <label for="name">商品名</label>
+        <input type="text" id="name" name="name" placeholder="商品名">
+        <label for="quantity">数量</label>
+        <input type="number" id="quantity" name="quantity" placeholder="0" min="0">
+        <button>登録</button>
+    </form>
+    <a href="/groceries">一覧へ</a>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>編集</title>
+</head>
+<body>
+    <h1>編集</h1>
+    <form action="/groceries/<%= grocery._id %>?_method=PUT" method="POST">
+        <label for="name">商品名</label>
+        <input type="text" id="name" name="name" placeholder="商品名" value="<%= grocery.name %>">
+        <label for="quantity">数量</label>
+        <input type="number" id="quantity" name="quantity" placeholder="0" min="0" value="<%= grocery.quantity %>">
+        <button>更新</button>
+    </form>
+    <a href="/groceries/<%= grocery._id %>">キャンセル</a>
+</body>
+
+</html>

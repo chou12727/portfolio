@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ユーザ登録</title>
+</head>
+
+<body>
+    <%= success %>
+    <%= error %>
+    <h1>登録</h1>
+    <form action="/register" method="POST">
+        <label for="username">ユーザ名</label>
+        <input type="text" id="username" name="username">
+        <label for="email">メールアドレス</label>
+        <input type="email" id="email" name="email">
+        <label for="password">パスワード</label>
+        <input type="password" id="password" name="password">
+        <button>登録</button>
+    </form>
+    <a href="/groceries">キャンセル</a>
+</body>
+
+</html>
