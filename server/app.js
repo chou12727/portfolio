@@ -16,15 +16,11 @@ const jwt = require('jsonwebtoken');
 const JWT_SECRET = 'your_jwt_secret';
 const cookieParser = require('cookie-parser');
 
-
-
-
 main().catch(err => console.log(err));
 async function main() {
     await mongoose.connect('mongodb://127.0.0.1:27017/portfolio');
     console.log('Mongodb接続OK')
 }
-
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -79,18 +75,17 @@ function groceryValidate(req, res, next) {
 };
 
 function apiIsLoggedIn(req, res, next) {
-    const token = req.cookies.token; 
-    console.log(token)
+    const token = req.cookies.token;
     if (!token) {
-        return next(new AppError(401, 'ログインが必要です')); 
+        return next(new AppError(401, 'ログインが必要です'));
     }
     jwt.verify(token, JWT_SECRET, (err, decoded) => {
-        if (err) { 
-            return next(new AppError(401, '無効なトークンです')); 
+        if (err) {
+            return next(new AppError(401, '無効なトークンです'));
         }
-        req.user = decoded; 
+        req.user = decoded;
         console.log(req.user);
-        next(); 
+        next();
     });
 };
 
@@ -109,8 +104,7 @@ async function verifyGroceryOwner(req, res, next) {
         const { id } = req.params;
         const grocery = await Grocery.findById(id);
         if (!grocery || !grocery.userId.equals(req.user._id)) {
-            req.flash('error', '商品が見つかりません。');
-            return res.redirect('/groceries');
+            return res.status(404).json({ error: 'Not found' });
         };
         next();
     } catch (e) {
@@ -189,8 +183,6 @@ app.post('/api/logout', (req, res) => {
     res.status(200).json({ message: 'ログアウトしました' });
 });
 
-
-
 app.post('/register', async (req, res, next) => {
     try {
         const { username, password } = req.body;
@@ -244,6 +236,13 @@ app.post('/groceries', isLoggedIn, groceryValidate, wrapAsync(async (req, res) =
     res.redirect('/groceries')
 }));
 
+app.post('/api/groceries', apiIsLoggedIn, groceryValidate, wrapAsync(async (req, res) => {
+    const grocery = new Grocery(req.body);
+    grocery.userId = req.user._id;
+    await grocery.save();
+    res.status(201).json({ message: '商品を追加しました', grocery });
+}));
+
 app.get('/groceries/:id/edit', isLoggedIn, verifyGroceryOwner, wrapAsync(async (req, res) => {
     const { id } = req.params;
     const grocery = await Grocery.findById(id);
@@ -255,6 +254,12 @@ app.put('/groceries/:id', isLoggedIn, verifyGroceryOwner, groceryValidate, wrapA
     const { id } = req.params;
     await Grocery.findByIdAndUpdate(id, req.body, { new: true, runValidators: true });
     res.redirect(`/groceries/${id}`)
+}));
+
+app.put('/api/groceries/:id', apiIsLoggedIn, verifyGroceryOwner, groceryValidate, wrapAsync(async (req, res) => {
+    const { id } = req.params;
+    const updated = await Grocery.findByIdAndUpdate(id, req.body, { new: true, runValidators: true });
+    res.status(200).json({ grocery: updated });
 }));
 
 app.get('/groceries/:id', isLoggedIn, verifyGroceryOwner, wrapAsync(async (req, res) => {
@@ -276,6 +281,17 @@ app.delete('/groceries/:id', isLoggedIn, verifyGroceryOwner, wrapAsync(async (re
 }));
 
 
+app.delete('/api/groceries/:id', apiIsLoggedIn, wrapAsync(async (req, res) => {
+    const { id } = req.params;
+    const grocery = await Grocery.findById(id);
+    if (!grocery || !grocery.userId.equals(req.user._id)) {
+        return res.status(404).json({ error: '商品が見つかりません' });
+    }
+    await Grocery.findByIdAndDelete(id);
+    res.status(200).json({ message: '削除しました' });
+}));
+
+
 app.all('*', (req, res, next) => {
     next(new AppError(404, 'ページが見つかりませんでした'))
 });
@@ -288,10 +304,10 @@ app.use((err, req, res, next) => {
     next(err)
 });
 
-app.use((err, req, res, next) => {
-    const { status = 401, message = 'エラーが発生しました' } = err;
-    res.status(status).send(message);
-})
+// app.use((err, req, res, next) => {
+//     const { status = 401, message = 'エラーが発生しました' } = err;
+//     res.status(status).send(message);
+// })
 app.use((err, req, res, next) => {
     const { status = 500, message = 'エラーが発生しました' } = err;
     res.status(status).json({ error: message });
