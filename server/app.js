@@ -1,3 +1,8 @@
+require('dotenv').config();
+const PORT = process.env.PORT || 4000;
+const MONGODB_URI = process.env.MONGODB_URI;
+const JWT_SECRET = process.env.JWT_SECRET;
+const SESSION_SECRET = process.env.SESSION_SECRET;
 const express = require('express');
 const app = express();
 const path = require('path');
@@ -13,12 +18,11 @@ const session = require('express-session');
 const flash = require('express-flash');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
-const JWT_SECRET = 'your_jwt_secret';
 const cookieParser = require('cookie-parser');
 
 main().catch(err => console.log(err));
 async function main() {
-    await mongoose.connect('mongodb://127.0.0.1:27017/portfolio');
+    await mongoose.connect(MONGODB_URI);
     console.log('Mongodb接続OK')
 }
 
@@ -29,7 +33,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(session({
-    secret: 'keyboard cat',
+    secret: SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: {
@@ -84,7 +88,6 @@ function apiIsLoggedIn(req, res, next) {
             return next(new AppError(401, '無効なトークンです'));
         }
         req.user = decoded;
-        console.log(req.user);
         next();
     });
 };
@@ -314,6 +317,6 @@ app.use((err, req, res, next) => {
 });
 
 
-app.listen(4000, () => {
-    console.log('ポート4000でリクエスト待受中...')
+app.listen(PORT, () => {
+    console.log(`ポート${PORT}でリクエスト待受中...`)
 });
