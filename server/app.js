@@ -93,6 +93,9 @@ function apiIsLoggedIn(req, res, next) {
 };
 
 
+app.get('/api/check-auth', apiIsLoggedIn, (req, res) => {
+  res.status(200).json({ user: { _id: req.user._id, username: req.user.username } });
+});
 
 function isLoggedIn(req, res, next) {
     if (!req.isAuthenticated()) {
@@ -186,58 +189,58 @@ app.post('/api/logout', (req, res) => {
     res.status(200).json({ message: 'ログアウトしました' });
 });
 
-app.post('/register', async (req, res, next) => {
-    try {
-        const { username, password } = req.body;
-        const user = new User({ username, email });
-        const registeredUser = await User.register(user, password);
-        req.login(registeredUser, err => {
-            if (err) { return next(err); }
-            req.flash('success', `${registeredUser.username}さん、ようこそ`);
-            res.redirect('/groceries')
-        })
-    } catch (e) {
-        req.flash('error', e.message);
-        res.redirect('/register')
-    }
-});
+// app.post('/register', async (req, res, next) => {
+//     try {
+//         const { username, password } = req.body;
+//         const user = new User({ username, email });
+//         const registeredUser = await User.register(user, password);
+//         req.login(registeredUser, err => {
+//             if (err) { return next(err); }
+//             req.flash('success', `${registeredUser.username}さん、ようこそ`);
+//             res.redirect('/groceries')
+//         })
+//     } catch (e) {
+//         req.flash('error', e.message);
+//         res.redirect('/register')
+//     }
+// });
 
-app.get('/login', (req, res) => {
-    res.render('users/login');
-});
+// app.get('/login', (req, res) => {
+//     res.render('users/login');
+// });
 
 
-app.post('/login', (req, res, next) => { if (req.session.wantUrl) res.locals.wantUrl = req.session.wantUrl; next(); },
-    passport.authenticate('local', { failureFlash: true, failureRedirect: '/login' }), (req, res) => {
-        const redirectUrl = res.locals.wantUrl || '/groceries';
-        req.flash('success', `${req.user.username}さん、おかえり`);
-        res.redirect(redirectUrl)
-    });
+// app.post('/login', (req, res, next) => { if (req.session.wantUrl) res.locals.wantUrl = req.session.wantUrl; next(); },
+//     passport.authenticate('local', { failureFlash: true, failureRedirect: '/login' }), (req, res) => {
+//         const redirectUrl = res.locals.wantUrl || '/groceries';
+//         req.flash('success', `${req.user.username}さん、おかえり`);
+//         res.redirect(redirectUrl)
+//     });
 
-app.get('/logout', (req, res, next) => {
-    req.logout((err) => {
-        if (err) { return next(err) }
-        req.flash('success', 'ログアウトしました');
-        res.redirect('/login')
-    });
-})
+// app.get('/logout', (req, res, next) => {
+//     req.logout((err) => {
+//         if (err) { return next(err) }
+//         req.flash('success', 'ログアウトしました');
+//         res.redirect('/login')
+//     });
+// })
 
-app.get('/groceries', isLoggedIn, wrapAsync(async (req, res) => {
-    const groceries = await Grocery.find({ userId: req.user._id });
-    res.render('groceries/index', { groceries })
-}));
+// app.get('/groceries', isLoggedIn, wrapAsync(async (req, res) => {
+//     const groceries = await Grocery.find({ userId: req.user._id });
+//     res.render('groceries/index', { groceries })
+// }));
 
-app.get('/groceries/new', isLoggedIn, (req, res) => {
-    res.render('groceries/new')
-});
+// app.get('/groceries/new', isLoggedIn, (req, res) => {
+//     res.render('groceries/new')
+// });
 
-app.post('/groceries', isLoggedIn, groceryValidate, wrapAsync(async (req, res) => {
-    const grocery = new Grocery(req.body);
-    grocery.userId = req.user._id;
-    await grocery.save();
-    req.flash('success', '新しい商品を追加しました');
-    res.redirect('/groceries')
-}));
+// app.post('/groceries', isLoggedIn, groceryValidate, wrapAsync(async (req, res) => {
+//     const grocery = new Grocery(req.body);
+//     grocery.userId = req.user._id;
+//     await grocery.save();
+//     req.flash('success', '新しい商品を追加しました');
+//     res.redirect('/groceries')
+// }));
 
 app.post('/api/groceries', apiIsLoggedIn, groceryValidate, wrapAsync(async (req, res) => {
     const grocery = new Grocery(req.body);
@@ -246,18 +249,18 @@ app.post('/api/groceries', apiIsLoggedIn, groceryValidate, wrapAsync(async (req,
     res.status(201).json({ message: '商品を追加しました', grocery });
 }));
 
-app.get('/groceries/:id/edit', isLoggedIn, verifyGroceryOwner, wrapAsync(async (req, res) => {
-    const { id } = req.params;
-    const grocery = await Grocery.findById(id);
-    // if (!grocery) { throw new AppError(404, '商品が見つかりません') };
-    res.render('groceries/edit', { grocery });
-}));
+// app.get('/groceries/:id/edit', isLoggedIn, verifyGroceryOwner, wrapAsync(async (req, res) => {
+//     const { id } = req.params;
+//     const grocery = await Grocery.findById(id);
+//     // if (!grocery) { throw new AppError(404, '商品が見つかりません') };
+//     res.render('groceries/edit', { grocery });
+// }));
 
-app.put('/groceries/:id', isLoggedIn, verifyGroceryOwner, groceryValidate, wrapAsync(async (req, res) => {
-    const { id } = req.params;
-    await Grocery.findByIdAndUpdate(id, req.body, { new: true, runValidators: true });
-    res.redirect(`/groceries/${id}`)
-}));
+// app.put('/groceries/:id', isLoggedIn, verifyGroceryOwner, groceryValidate, wrapAsync(async (req, res) => {
+//     const { id } = req.params;
+//     await Grocery.findByIdAndUpdate(id, req.body, { new: true, runValidators: true });
+//     res.redirect(`/groceries/${id}`)
+// }));
 
 app.put('/api/groceries/:id', apiIsLoggedIn, verifyGroceryOwner, groceryValidate, wrapAsync(async (req, res) => {
     const { id } = req.params;
@@ -276,12 +279,12 @@ app.get('/groceries/:id', isLoggedIn, verifyGroceryOwner, wrapAsync(async (req, 
     res.render('groceries/show', { grocery });
 }));
 
-app.delete('/groceries/:id', isLoggedIn, verifyGroceryOwner, wrapAsync(async (req, res) => {
-    const { id } = req.params;
-    await Grocery.findByIdAndDelete(id);
-    req.flash('success', '商品を削除しました');
-    res.redirect('/groceries')
-}));
+// app.delete('/groceries/:id', isLoggedIn, verifyGroceryOwner, wrapAsync(async (req, res) => {
+//     const { id } = req.params;
+//     await Grocery.findByIdAndDelete(id);
+//     req.flash('success', '商品を削除しました');
+//     res.redirect('/groceries')
+// }));
 
 
 app.delete('/api/groceries/:id', apiIsLoggedIn, wrapAsync(async (req, res) => {

@@ -1,3 +1,7 @@
+
+import AddIcon from '@mui/icons-material/Add';
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
 import { useState } from "react";
 
 export default function NewGroceryForm({ addGrocery }) {
@@ -14,13 +18,16 @@ export default function NewGroceryForm({ addGrocery }) {
 
     return (
         <>
-            <h1>新規登録</h1>
-            <form onSubmit={handleCreate}>
-                <label for="name">商品名</label>
+            <form onSubmit={handleCreate} >
+                <label htmlFor="name">商品名</label>
                 <input type="text" id="name" name="name" placeholder="商品名" value={formData.name} onChange={handleChange} />
-                <label for="quantity">数量</label>
+                <label htmlFor="quantity">数量</label>
                 <input type="number" id="quantity" name="quantity" placeholder="0" min="1" value={formData.quantity} onChange={handleChange} />
-                <button>登録</button>
+                <Tooltip title="Add">
+                <IconButton type='submit' >
+                    <AddIcon />
+                </IconButton>
+            </Tooltip>
             </form>
         </>
     )

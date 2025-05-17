@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from './api/api';
 
-export default function RegisterForm() {
+export default function RegisterForm({setUser}) {
     const [formData, setFormData] = useState({ username: "", email: "", password: "" })
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -12,7 +12,8 @@ export default function RegisterForm() {
         e.preventDefault();
         try {
             const response = await api.post("/api/register", formData);
-            alert(response.data.message)
+            alert(response.data.message);
+            setUser(response.data.user);
             navigate("/groceries");
         } catch (err) {
             console.error(err)
