@@ -10,6 +10,10 @@ const grocerySchema = new mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
+    },
+    expirationDate: {
+        type: Date,
+        set: (v) => v ? new Date(v) : v
     }
 });
 

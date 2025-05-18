@@ -19,6 +19,19 @@ import { useNavigate } from 'react-router-dom';
 import Grocery from "./Grocery";
 
 function descendingComparator(a, b, orderBy) {
+    if (orderBy === 'expirationDate') {
+        const dateA = new Date(a[orderBy]).getTime();
+        const dateB = new Date(b[orderBy]).getTime();
+
+        if (dateB < dateA) {
+            return -1;
+        }
+        if (dateB > dateA) {
+            return 1;
+        }
+        return 0;
+    };
+
     if (b[orderBy] < a[orderBy]) {
         return -1;
     }
@@ -34,7 +47,7 @@ function getComparator(order, orderBy) {
         : (a, b) => -descendingComparator(a, b, orderBy);
 };
 
-export default function EnhancedTable({user}) {
+export default function EnhancedTable({ user }) {
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('quantity');
     const [selected, setSelected] = useState([]);
@@ -58,11 +71,12 @@ export default function EnhancedTable({user}) {
         };
         fetchGroceries();
     }, []);
+    
     const rows = groceries.map((g) => ({
         id: g._id,
         name: g.name,
         quantity: g.quantity,
-        carbs: 0,
+        expirationDate: g.expirationDate,
         protein: 0
     }));
 
@@ -76,9 +90,9 @@ export default function EnhancedTable({user}) {
         }
     };
 
-        const addGrocery = async (formData) => {
+    const addGrocery = async (formData) => {
         try {
-            const res = await api.post('/api/groceries', { name: formData.name, quantity: formData.quantity });
+            const res = await api.post('/api/groceries', { name: formData.name, quantity: formData.quantity, expirationDate: formData.expirationDate });
             setGroceries([...groceries, res.data.grocery]);
         } catch (error) {
             const message = error.response?.data?.error || '作成に失敗しました'
@@ -202,7 +216,7 @@ export default function EnhancedTable({user}) {
                     onPageChange={handleChangePage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
-                
+
             </Paper>
             <FormControlLabel
                 control={<Switch checked={dense} onChange={handleChangeDense} />}

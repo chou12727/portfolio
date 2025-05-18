@@ -22,20 +22,21 @@ const headCells = [
     },
 
     {
-        id: 'carbs',
+        id: 'expirationDate',
         numeric: true,
         disablePadding: false,
-        label: 'Carbs (g)',
+        label: '期限',
     },
     {
         id: 'protein',
         numeric: true,
         disablePadding: false,
-        label: 'Protein (g)',
+        label: 'メモ',
     },
 ];
 
-export default function EnhancedTableHead({onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort}) {
+
+export default function EnhancedTableHead({ onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort }) {
     const createSortHandler = (property) => (event) => {
         onRequestSort(event, property);
     };
@@ -57,14 +58,16 @@ export default function EnhancedTableHead({onSelectAllClick, order, orderBy, num
                 {headCells.map((headCell) => (
                     <TableCell
                         key={headCell.id}
-                        align={headCell.numeric ? 'right' : 'left'}
+                        align={headCell.numeric ? 'center' : 'left'}
                         padding={headCell.disablePadding ? 'none' : 'normal'}
                         sortDirection={orderBy === headCell.id ? order : false}
+
                     >
                         <TableSortLabel
                             active={orderBy === headCell.id}
                             direction={orderBy === headCell.id ? order : 'asc'}
                             onClick={createSortHandler(headCell.id)}
+                            sx={{ flexDirection: 'row' }}
                         >
                             {headCell.label}
                             {orderBy === headCell.id ? (

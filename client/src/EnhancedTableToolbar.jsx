@@ -29,7 +29,7 @@ export default function EnhancedTableToolbar({ numSelected,addGrocery}) {
         >
             {numSelected > 0 ? (
                 <Typography
-                    sx={{ flex: '1 1 100%' }}
+                    sx={{ flex: '1 1 50%' }}
                     color="inherit"
                     variant="subtitle1"
                     component="div"
@@ -38,7 +38,7 @@ export default function EnhancedTableToolbar({ numSelected,addGrocery}) {
                 </Typography>
             ) : (
                 <Typography
-                    sx={{ flex: '1 1 70%' }}
+                    sx={{ flex: '1 1 50%' }}
                     variant="h6"
                     id="tableTitle"
                     component="div"

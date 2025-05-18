@@ -244,6 +244,7 @@ app.post('/api/logout', (req, res) => {
 
 app.post('/api/groceries', apiIsLoggedIn, groceryValidate, wrapAsync(async (req, res) => {
     const grocery = new Grocery(req.body);
+    console.log(req.body);
     grocery.userId = req.user._id;
     await grocery.save();
     res.status(201).json({ message: '商品を追加しました', grocery });
