@@ -13,6 +13,7 @@ import EnhancedTableHead from './EnhancedTableHead';
 
 
 
+
 import { useState, useEffect, useMemo } from "react";
 import api from './api/api';
 import { useNavigate } from 'react-router-dom';
@@ -71,13 +72,13 @@ export default function EnhancedTable({ user }) {
         };
         fetchGroceries();
     }, []);
-    
+
     const rows = groceries.map((g) => ({
         id: g._id,
         name: g.name,
         quantity: g.quantity,
         expirationDate: g.expirationDate,
-        protein: 0
+        note: g.note
     }));
 
     const removeGrocery = async (id) => {
@@ -169,12 +170,12 @@ export default function EnhancedTable({ user }) {
     );
 
     return (
-        <Box sx={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', pt: 3 }}>
+        <Box sx={{ width: '95%', height: '90%', display: 'flex', flexDirection: 'column', pt: 3, mx: 'auto' }}>
             <Paper sx={{ width: '100%', flex: 1, display: 'flex', flexDirection: 'column' }}>
                 <EnhancedTableToolbar numSelected={selected.length} addGrocery={addGrocery} />
                 <TableContainer sx={{ flex: 1, overflow: 'auto' }}>
                     <Table
-                        sx={{ minWidth: 750 }}
+                        sx={{ width: '100%', tableLayout: 'fixed' }}
                         aria-labelledby="tableTitle"
                         size={dense ? 'small' : 'medium'}
                     >

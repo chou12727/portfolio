@@ -8,8 +8,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import NewGroceryForm from './NewGroceryForm';
 import Box from '@mui/material/Box';
-
-export default function EnhancedTableToolbar({ numSelected,addGrocery}) {
+import { visuallyHidden } from '@mui/utils';
+export default function EnhancedTableToolbar({ numSelected, addGrocery }) {
 
     return (
         <Toolbar
@@ -29,7 +29,7 @@ export default function EnhancedTableToolbar({ numSelected,addGrocery}) {
         >
             {numSelected > 0 ? (
                 <Typography
-                    sx={{ flex: '1 1 50%' }}
+                    sx={{ flex: '1 1 %' }}
                     color="inherit"
                     variant="subtitle1"
                     component="div"
@@ -38,7 +38,7 @@ export default function EnhancedTableToolbar({ numSelected,addGrocery}) {
                 </Typography>
             ) : (
                 <Typography
-                    sx={{ flex: '1 1 50%' }}
+                    sx={{ flex: '1 1 50%' ,flex:'0 0 auto'}}
                     variant="h6"
                     id="tableTitle"
                     component="div"
@@ -48,24 +48,24 @@ export default function EnhancedTableToolbar({ numSelected,addGrocery}) {
                 </Typography>
 
             )}
-            <Box sx={{ ml: 2, display: 'flex', alignItems: 'center' }}>
-            <NewGroceryForm addGrocery={addGrocery} />
-               {numSelected > 0 ? (
-                <Tooltip title="Delete">
-                    <IconButton>
-                        <DeleteIcon />
-                    </IconButton>
-                </Tooltip>
-            ) : (
-                <Tooltip title="Filter list">
-                    <IconButton>
-                        <FilterListIcon />
-                    </IconButton>
-                </Tooltip>
-            )}
+            <Box sx={{ ml: 2, display: 'flex', alignItems: 'center' ,flex:'0 0 auto'}}>
+                <NewGroceryForm addGrocery={addGrocery} />
+                {numSelected > 0 ? (
+                    <Tooltip title="Delete">
+                        <IconButton>
+                            <DeleteIcon />
+                        </IconButton>
+                    </Tooltip>
+                ) : (
+                    <Tooltip title="Filter list">
+                        <IconButton>
+                            <FilterListIcon sx={visuallyHidden}/>
+                        </IconButton>
+                    </Tooltip>
+                )}
             </Box>
-            
-         
+
+
         </Toolbar>
     );
 }

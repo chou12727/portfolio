@@ -9,6 +9,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import CheckIcon from '@mui/icons-material/Check';
 import Box from '@mui/material/Box';
 import CloseIcon from '@mui/icons-material/Close';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 
 const toDateInputValue = (date) => {
@@ -21,7 +22,7 @@ const toDateInputValue = (date) => {
 export default function Grocery({ row, removeGrocery, updateGrocery, handleClick, labelId, isItemSelected }) {
     const [hoverField, setHoverField] = useState(null);
     const [editingField, setEditingField] = useState(null);
-    const [editData, setEditData] = useState({ name: row.name, quantity: row.quantity, expirationDate: toDateInputValue(row.expirationDate) });
+    const [editData, setEditData] = useState({ name: row.name, quantity: row.quantity, expirationDate: toDateInputValue(row.expirationDate), note: row.note });
 
     const saveField = async (field) => {
         await updateGrocery(row.id, editData);
@@ -32,6 +33,7 @@ export default function Grocery({ row, removeGrocery, updateGrocery, handleClick
             name: row.name,
             quantity: row.quantity,
             expirationDate: toDateInputValue(row.expirationDate),
+            note: row.note
         });
         setEditingField(null);
     };
@@ -62,7 +64,7 @@ export default function Grocery({ row, removeGrocery, updateGrocery, handleClick
                 tabIndex={-1}
                 key={row.id}
                 selected={isItemSelected}
-                sx={{ cursor: 'pointer' }}
+                sx={{ cursor: 'auto' }}
             >
                 <TableCell padding="checkbox">
                     <Checkbox
@@ -72,6 +74,7 @@ export default function Grocery({ row, removeGrocery, updateGrocery, handleClick
                         inputProps={{
                             'aria-labelledby': labelId,
                         }}
+                        sx={{ cursor: 'pointer' }}
                     />
                 </TableCell>
                 <TableCell
@@ -222,8 +225,71 @@ export default function Grocery({ row, removeGrocery, updateGrocery, handleClick
                         )}
                     </Box>
                 </TableCell>
-                <TableCell align="right">{row.protein}</TableCell>
-                <TableCell align="right"><button onClick={removeGrocery}>削除</button></TableCell>
+                <TableCell
+                    component="th"
+                    id={labelId}
+                    scope="row"
+                    padding="none"
+                    onMouseEnter={() => setHoverField('note')}
+                    onMouseLeave={() => setHoverField(null)}
+                    sx={{
+                        color: 'blue',
+                        backgroundColor: '#f5f5f5',
+                        minWidth: 150,
+                        maxWidth: 150,
+                        whiteSpace: 'nowrap',
+                    }}
+                >
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "center" }}>
+                        {editingField === 'note' ? (
+                            <>
+                                <input
+                                    type="text"
+                                    value={editData.note}
+                                    onChange={(e) => setEditData({ ...editData, note: e.target.value })}
+                                />
+                                <IconButton onClick={() => saveField('note')} size="small">
+                                    <CheckIcon fontSize="small" />
+                                </IconButton>
+                                <IconButton onClick={cancelEdit} size="small">
+                                    <CloseIcon fontSize="small" />
+                                </IconButton>
+                            </>
+                        ) : (
+                            <>
+                                {row.note}
+                                <IconButton onClick={() => setEditingField('note')} size="small"
+                                    sx={{
+                                        opacity: hoverField === 'note' ? 1 : 0,
+                                        transition: 'opacity 0.2s ease-in-out',
+                                        ml: 1,
+                                    }}>
+                                    <EditIcon fontSize="small" />
+                                </IconButton>
+
+                            </>
+                        )}
+                    </Box>
+                </TableCell>
+                <TableCell
+                    component="th"
+                    id={labelId}
+                    scope="row"
+                    padding="none"
+                    sx={{
+                        color: 'blue',
+                        backgroundColor: '#f5f5f5',
+                        minWidth: 150,
+                        maxWidth: 150,
+                        whiteSpace: 'nowrap',
+                    }}
+                >
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "center", width: "10", pt: 1, pr: 2 }} align="right">
+                        <IconButton onClick={removeGrocery} size="small">
+                            <DeleteIcon fontSize="small" />
+                        </IconButton>
+                    </Box>
+                </TableCell>
             </TableRow>
         </>
     )

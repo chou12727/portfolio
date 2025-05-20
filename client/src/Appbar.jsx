@@ -34,7 +34,7 @@ export default function Appbar({ user,setUser }) {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        {user?.username}の冷蔵庫
+                        {user?.username ? `${user.username}の冷蔵庫` : '冷蔵庫管理'}
                     </Typography>
                     {
                         !user && (<><Button color="inherit" onClick={() => navigate("/register")}>Register</Button>

@@ -28,10 +28,16 @@ const headCells = [
         label: '期限',
     },
     {
-        id: 'protein',
+        id: 'note',
         numeric: true,
         disablePadding: false,
         label: 'メモ',
+    },
+    {
+        id: 'tool',
+        numeric: true,
+        disablePadding: false,
+        label: '',
     },
 ];
 
@@ -61,21 +67,26 @@ export default function EnhancedTableHead({ onSelectAllClick, order, orderBy, nu
                         align={headCell.numeric ? 'center' : 'left'}
                         padding={headCell.disablePadding ? 'none' : 'normal'}
                         sortDirection={orderBy === headCell.id ? order : false}
-
                     >
-                        <TableSortLabel
-                            active={orderBy === headCell.id}
-                            direction={orderBy === headCell.id ? order : 'asc'}
-                            onClick={createSortHandler(headCell.id)}
-                            sx={{ flexDirection: 'row' }}
-                        >
-                            {headCell.label}
-                            {orderBy === headCell.id ? (
-                                <Box component="span" sx={visuallyHidden}>
-                                    {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                                </Box>
-                            ) : null}
-                        </TableSortLabel>
+                        {
+                            headCell.label === '' ? null :
+                                <TableSortLabel
+                                    active={orderBy === headCell.id}
+                                    direction={orderBy === headCell.id ? order : 'asc'}
+                                    onClick={createSortHandler(headCell.id)}
+                                    sx={{ flexDirection: 'row' }}
+                                >
+                                    {headCell.label}
+                                    {orderBy === headCell.id ? (
+                                        <Box component="span" sx={visuallyHidden}>
+                                            {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                                        </Box>
+                                    ) : null}
+                                </TableSortLabel>
+                        }
+
+
+
                     </TableCell>
                 ))}
             </TableRow>

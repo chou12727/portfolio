@@ -1,8 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "./api/api";
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 
-export default function LoginForm({setUser}) {
+export default function LoginForm({ setUser }) {
     const [formData, setFormData] = useState({ username: "", password: "" });
     const navigate = useNavigate();
 
@@ -24,27 +29,58 @@ export default function LoginForm({setUser}) {
 
     return (
         <>
-            <form onSubmit={handleLogin}>
-                <label htmlFor="username">ユーザ名:</label>
-                <input
-                    onChange={handleChange}
-                    type="text"
-                    name="username"
-                    value={formData.username}
-                    required
-                />
-
-                <label htmlFor="password">パスワード:</label>
-                <input
-                    onChange={handleChange}
-                    type="password"
-                    name="password"
-                    value={formData.password}
-                    required
-                />
-
-                <button type="submit">ログイン</button>
-            </form>
+            <Typography variant="h3" gutterBottom sx={{ textAlign: 'center', width: '100%', mt: 10, mb: -10 }}>
+                ログイン
+            </Typography>
+            <Box component="form" onSubmit={handleLogin} sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: 2,
+                mt: 15
+            }}>
+                <Box sx={{ display: 'flex', gap: 1 }}>
+                    {/* <label htmlFor="username">ユーザ名:</label> */}
+                    <TextField
+                        required
+                        id="outlined-required"
+                        label="ユーザ名"
+                        defaultValue="Hello World"
+                        onChange={handleChange}
+                        type="text"
+                        name="username"
+                        value={formData.username} Ï
+                    />
+                    {/* <input
+                        onChange={handleChange}
+                        type="text"
+                        name="username"
+                        value={formData.username}
+                        required
+                    /> */}
+                </Box>
+                <Box sx={{ display: 'flex', gap: 1 }}>
+                    {/* <label htmlFor="password">パスワード:</label> */}
+                    <TextField
+                        required
+                        id="outlined-required"
+                        label="パスワード"
+                        defaultValue="Hello World"
+                        onChange={handleChange}
+                        type="password"
+                        name="password"
+                        value={formData.password}
+                    />
+                    {/* <input
+                        onChange={handleChange}
+                        type="password"
+                        name="password"
+                        value={formData.password}
+                        required
+                    /> */}
+                </Box>
+                <Button variant="contained" type="submit">ログイン</Button>
+            </Box>
         </>
     );
 }

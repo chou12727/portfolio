@@ -14,6 +14,9 @@ const grocerySchema = new mongoose.Schema({
     expirationDate: {
         type: Date,
         set: (v) => v ? new Date(v) : v
+    },
+    note: {
+        type: String
     }
 });
 
