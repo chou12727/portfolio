@@ -146,6 +146,8 @@ app.post('/api/register', async (req, res, next) => {
         );
         res.cookie('token', token, {
             httpOnly: true,
+            secure: true,
+            sameSite: 'None',
             maxAge: 1000 * 60 * 60
         });
         res.status(201).json({
@@ -180,6 +182,8 @@ app.post('/api/login', async (req, res, next) => {
 
         res.cookie('token', token, {
             httpOnly: true,
+            secure: true,
+            sameSite: 'None',
             maxAge: 1000 * 60 * 60
         });
 
