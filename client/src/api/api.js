@@ -1,8 +1,12 @@
 import axios from 'axios';
 const isDev = import.meta.env.MODE === 'development';
+// const token = localStorage.getItem('token');
 
 const api = axios.create({
   baseURL: isDev ? 'http://localhost:4000/' : 'https://portfolio-fsos.onrender.com/',
+  // headers: {
+  //   Authorization: token ? `Bearer ${token}` : ''
+  // },
   withCredentials: true
 });
 
@@ -33,6 +37,14 @@ const api = axios.create({
 //     return Promise.reject(error); // エラーを再度throwして、コンポーネント内のtry/catchで処理できるようにします
 //   }
 // );
-
+api.interceptors.request.use(config => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  } else {
+    delete config.headers.Authorization;
+  }
+  return config;
+});
 
 export default api;

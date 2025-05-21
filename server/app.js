@@ -58,6 +58,7 @@ app.use((req, res, next) => {
     next()
 });
 app.use(cors({
+    // origin: 'http://localhost:5173',
     origin: 'https://portfolio-client-bi16.onrender.com',
     credentials: true
 }));
@@ -87,13 +88,17 @@ function apiIsLoggedIn(req, res, next) {
     const authHeader = req.headers.authorization;
     const token = authHeader && authHeader.split(" ")[1];
     if (!token) {
+        console.log('token:', token);
+        console.log('Authorization:', `Bearer ${token}`)
         return next(new AppError(401, 'ログインが必要です'));
+
     }
     jwt.verify(token, JWT_SECRET, (err, decoded) => {
         if (err) {
             return next(new AppError(401, '無効なトークンです'));
         }
         req.user = decoded;
+
         next();
     });
 };
