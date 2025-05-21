@@ -1,7 +1,8 @@
 import axios from 'axios';
+const isDev = import.meta.env.MODE === 'development';
 
 const api = axios.create({
-  baseURL: 'https://portfolio-fsos.onrender.com/',
+  baseURL: isDev ? 'http://localhost:4000/' : 'https://portfolio-fsos.onrender.com/',
   withCredentials: true
 });
 

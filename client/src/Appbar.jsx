@@ -37,10 +37,10 @@ export default function Appbar({ user,setUser }) {
                         {user?.username ? `${user.username}の冷蔵庫` : '冷蔵庫管理'}
                     </Typography>
                     {
-                        !user && (<><Button color="inherit" onClick={() => navigate("/register")}>Register</Button>
-                            <Button color="inherit" onClick={() => navigate("/login")}>Login</Button></>)
+                        !user && (<><Button color="inherit" onClick={() => navigate("/register")}>登録</Button>
+                            <Button color="inherit" onClick={() => navigate("/login")}>ログイン</Button></>)
                     }
-                    {user && <Button color="inherit" onClick={handleLogout}>Logout</Button>}
+                    {user && <Button color="inherit" onClick={handleLogout}>ログアウト</Button>}
 
                 </Toolbar>
             </AppBar>

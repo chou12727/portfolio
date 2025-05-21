@@ -43,13 +43,12 @@ export default function LoginForm({ setUser }) {
                     {/* <label htmlFor="username">ユーザ名:</label> */}
                     <TextField
                         required
-                        id="outlined-required"
+                        id="username-required"
                         label="ユーザ名"
-                        defaultValue="Hello World"
                         onChange={handleChange}
                         type="text"
                         name="username"
-                        value={formData.username} Ï
+                        value={formData.username}
                     />
                     {/* <input
                         onChange={handleChange}
@@ -63,9 +62,8 @@ export default function LoginForm({ setUser }) {
                     {/* <label htmlFor="password">パスワード:</label> */}
                     <TextField
                         required
-                        id="outlined-required"
+                        id="password-required"
                         label="パスワード"
-                        defaultValue="Hello World"
                         onChange={handleChange}
                         type="password"
                         name="password"
