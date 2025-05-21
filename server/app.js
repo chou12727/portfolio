@@ -193,7 +193,11 @@ app.post('/api/login', async (req, res, next) => {
     }
 });
 app.post('/api/logout', (req, res) => {
-    res.clearCookie('token');
+    res.clearCookie('token', {
+  httpOnly: true,
+  secure: true,
+  sameSite: 'None'
+});
     res.status(200).json({ message: 'ログアウトしました' });
 });
 
