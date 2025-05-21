@@ -90,7 +90,7 @@ export default function Grocery({ row, removeGrocery, updateGrocery, handleClick
                     sx={{
                         color: 'blue',
                         backgroundColor: '#f5f5f5',
-                        minWidth: 150,
+                        minWidth: 70,
                         maxWidth: 150,
                         whiteSpace: 'nowrap',
                     }}
