@@ -122,7 +122,7 @@ async function verifyGroceryOwner(req, res, next) {
     }
 };
 
-app.get('/api/groceries', apiIsLoggedIn, wrapAsync(async (req, res) => {
+app.get('/api', apiIsLoggedIn, wrapAsync(async (req, res) => {
     const groceries = await Grocery.find({ userId: req.user._id });
     res.status(200).json(groceries)
 }));
