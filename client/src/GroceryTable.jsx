@@ -175,7 +175,7 @@ export default function EnhancedTable({ user }) {
                 <EnhancedTableToolbar numSelected={selected.length} addGrocery={addGrocery} />
                 <TableContainer sx={{ flex: 1, overflow: 'auto' }}>
                     <Table
-                        sx={{ width: '100%', tableLayout: 'fixed' }}
+                        sx={{ width: '100%', tableLayout: 'auto' }}
                         aria-labelledby="tableTitle"
                         size={dense ? 'small' : 'medium'}
                     >

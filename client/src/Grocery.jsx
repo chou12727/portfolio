@@ -10,7 +10,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import Box from '@mui/material/Box';
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteIcon from '@mui/icons-material/Delete';
-
+import TextField from '@mui/material/TextField';
 
 const toDateInputValue = (date) => {
     if (!date) return '';
@@ -25,8 +25,8 @@ export default function Grocery({ row, removeGrocery, updateGrocery, handleClick
     const [editData, setEditData] = useState({ name: row.name, quantity: row.quantity, expirationDate: toDateInputValue(row.expirationDate), note: row.note });
 
     const saveField = async (field) => {
-        await updateGrocery(row.id, editData);
         setEditingField(null);
+        await updateGrocery(row.id, editData);
     };
     const cancelEdit = () => {
         setEditData({
@@ -57,8 +57,8 @@ export default function Grocery({ row, removeGrocery, updateGrocery, handleClick
     return (
         <>
             <TableRow
-                hover
-                role="checkbox"
+                // hover
+                // role="checkbox"
 
                 aria-checked={isItemSelected}
                 tabIndex={-1}
@@ -66,7 +66,10 @@ export default function Grocery({ row, removeGrocery, updateGrocery, handleClick
                 selected={isItemSelected}
                 sx={{ cursor: 'auto' }}
             >
-                <TableCell padding="checkbox">
+                <TableCell padding="checkbox"
+                    sx={{
+                        backgroundColor: '#f5f5f5',
+                    }}>
                     <Checkbox
                         onClick={(event) => handleClick(event, row.id)}
                         color="primary"
@@ -110,7 +113,7 @@ export default function Grocery({ row, removeGrocery, updateGrocery, handleClick
                             </>
                         ) : (
                             <>
-                                {row.name}
+                                <Box onClick={() => setEditingField('name')}>{row.name}</Box>
                                 <IconButton onClick={() => setEditingField('name')} size="small"
                                     sx={{
                                         opacity: hoverField === 'name' ? 1 : 0,
@@ -130,9 +133,9 @@ export default function Grocery({ row, removeGrocery, updateGrocery, handleClick
                     onMouseLeave={() => setHoverField(null)}
                     sx={{
                         color: 'blue',
-                        backgroundColor: '#f5f2a2',
+                        backgroundColor: '#f5f5f5',
                         minWidth: 120,
-                        maxWidth: 120,
+                        // maxWidth: 180,
                         whiteSpace: 'nowrap',
 
                     }}
@@ -140,13 +143,30 @@ export default function Grocery({ row, removeGrocery, updateGrocery, handleClick
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         {editingField === 'quantity' ? (
                             <>
-                                <IconButton onClick={() => handleQuantityChange(-1)} size="small">
+                                {/* <IconButton onClick={() => handleQuantityChange(-1)} size="small">
                                     <RemoveIcon fontSize="small" />
-                                </IconButton>
-                                {editData.quantity}
-                                <IconButton onClick={() => handleQuantityChange(1)} size="small">
+                                </IconButton> */}
+                                <TextField
+                                    // id="outlined-number"
+                                    // label="Number"
+                                    type="number"
+                                    InputProps={{
+                                        sx: { fontSize: '0.9rem' }
+                                    }}
+                                    value={editData.quantity}
+                                    onChange={(e) => setEditData({ ...editData, quantity: e.target.value })}
+                                    size="small"
+                                    sx={{ width: 80, }}
+                                />
+                                {/* <input
+                                    type="text"
+                                    value={editData.quantity}
+                                    onChange={(e) => setEditData({ ...editData, quantity: e.target.value })}
+                                /> */}
+                                {/* {editData.quantity} */}
+                                {/* <IconButton onClick={() => handleQuantityChange(1)} size="small">
                                     <AddIcon fontSize="small" />
-                                </IconButton>
+                                </IconButton> */}
                                 <IconButton onClick={() => saveField('quantity')} size="small">
                                     <CheckIcon fontSize="small" />
                                 </IconButton>
@@ -156,7 +176,7 @@ export default function Grocery({ row, removeGrocery, updateGrocery, handleClick
                             </>
                         ) : (
                             <>
-                                {row.quantity}
+                                <Box onClick={() => setEditingField('quantity')}>{row.quantity}</Box>
                                 <IconButton onClick={() => setEditingField('quantity')} size="small"
                                     sx={{
                                         opacity: hoverField === 'quantity' ? 1 : 0,
@@ -206,12 +226,12 @@ export default function Grocery({ row, removeGrocery, updateGrocery, handleClick
                             </>
                         ) : (
                             <>
-                                {row.expirationDate ? new Date(row.expirationDate).toLocaleDateString('ja-JP', {
+                                <Box onClick={() => setEditingField('expirationDate')}>{row.expirationDate ? new Date(row.expirationDate).toLocaleDateString('ja-JP', {
                                     year: 'numeric',
                                     month: '2-digit',
                                     day: '2-digit',
                                 }) : ''}
-
+                                </Box>
                                 <IconButton onClick={() => setEditingField('expirationDate')} size="small"
                                     sx={{
                                         opacity: hoverField === 'expirationDate' ? 1 : 0,
@@ -240,7 +260,7 @@ export default function Grocery({ row, removeGrocery, updateGrocery, handleClick
                         whiteSpace: 'nowrap',
                     }}
                 >
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "center" }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "center" }} >
                         {editingField === 'note' ? (
                             <>
                                 <input

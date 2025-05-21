@@ -95,7 +95,7 @@ function apiIsLoggedIn(req, res, next) {
     }
     jwt.verify(token, JWT_SECRET, (err, decoded) => {
         if (err) {
-            return next(new AppError(401, '無効なトークンです'));
+            return next(new AppError(401, 'ログインが必要です'));
         }
         req.user = decoded;
 
