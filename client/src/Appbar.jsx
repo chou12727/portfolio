@@ -8,11 +8,12 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { useNavigate } from 'react-router-dom';
 import api from './api/api';
 
-export default function Appbar({ user,setUser }) {
+export default function Appbar({ user, setUser }) {
     const navigate = useNavigate();
     const handleLogout = async () => {
         try {
-            await api.post('/api/logout');
+            // await api.post('/api/logout');
+            localStorage.removeItem("token")
             setUser(null)
             navigate('/login');
         } catch (error) {

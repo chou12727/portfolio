@@ -19,6 +19,7 @@ export default function LoginForm({ setUser }) {
         e.preventDefault();
         try {
             const response = await api.post("/api/login", formData);
+            localStorage.setItem("token", response.data.token);
             setUser(response.data.user);
             navigate("/groceries");
         } catch (err) {

@@ -58,8 +58,8 @@ app.use((req, res, next) => {
     next()
 });
 app.use(cors({
-  origin: 'https://portfolio-client-bi16.onrender.com',
-  credentials: true
+    origin: 'https://portfolio-client-bi16.onrender.com',
+    credentials: true
 }));
 
 app.get('/home', (req, res) => {
@@ -83,7 +83,9 @@ function groceryValidate(req, res, next) {
 };
 
 function apiIsLoggedIn(req, res, next) {
-    const token = req.cookies.token;
+    // const token = req.cookies.token;
+    const authHeader = req.headers.authorization;
+    const token = authHeader && authHeader.split(" ")[1];
     if (!token) {
         return next(new AppError(401, 'ログインが必要です'));
     }
@@ -98,7 +100,7 @@ function apiIsLoggedIn(req, res, next) {
 
 
 app.get('/api/check-auth', apiIsLoggedIn, (req, res) => {
-  res.status(200).json({ user: { _id: req.user._id, username: req.user.username } });
+    res.status(200).json({ user: { _id: req.user._id, username: req.user.username } });
 });
 
 function isLoggedIn(req, res, next) {
@@ -144,15 +146,16 @@ app.post('/api/register', async (req, res, next) => {
             JWT_SECRET,
             { expiresIn: '1h' }
         );
-        res.cookie('token', token, {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'None',
-            maxAge: 1000 * 60 * 60
-        });
+        // res.cookie('token', token, {
+        //     httpOnly: true,
+        //     secure: true,
+        //     sameSite: 'None',
+        //     maxAge: 1000 * 60 * 60
+        // });
         res.status(201).json({
             message: 'ユーザー登録が完了しました',
-            user: { username: registeredUser.username }
+            user: { username: registeredUser.username },
+            token
         });
 
     } catch (e) {
@@ -187,19 +190,20 @@ app.post('/api/login', async (req, res, next) => {
             maxAge: 1000 * 60 * 60
         });
 
-        res.status(200).json({ message: 'ログイン成功', user: { username: user.username } });
+        res.status(200).json({ message: 'ログイン成功', user: { username: user.username }, token });
     } catch (e) {
         next(e);
     }
 });
-app.post('/api/logout', (req, res) => {
-    res.clearCookie('token', {
-  httpOnly: true,
-  secure: true,
-  sameSite: 'None'
-});
-    res.status(200).json({ message: 'ログアウトしました' });
-});
+// app.post('/api/logout', (req, res) => {
+//     res.clearCookie('token', {
+//         httpOnly: true,
+//         secure: true,
+//         sameSite: 'None'
+//     });
+
+//     res.status(200).json({ message: 'ログアウトしました' });
+// });
 
 // app.post('/register', async (req, res, next) => {
 //     try {
