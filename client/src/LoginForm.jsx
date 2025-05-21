@@ -20,7 +20,7 @@ export default function LoginForm({ setUser }) {
         try {
             const response = await api.post("/api/login", formData);
             setUser(response.data.user);
-            navigate("/");
+            navigate("/groceries");
         } catch (err) {
             console.error(err);
             alert("ログインに失敗しました：" + (err.response?.data?.error || err.message));
