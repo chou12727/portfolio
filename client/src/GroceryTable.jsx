@@ -62,7 +62,7 @@ export default function EnhancedTable({ user }) {
     useEffect(() => {
         const fetchGroceries = async () => {
             try {
-                const res = await api.get('api/');
+                const res = await api.get('/api');
                 setGroceries(res.data);
             } catch (error) {
                 const message = error.response?.data?.error || "データ取得失敗"
