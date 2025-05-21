@@ -56,10 +56,13 @@ app.use((req, res, next) => {
     res.locals.error = req.flash('error');
     next()
 });
-
+app.use(cors({
+  origin: 'https://portfolio-client-bi16.onrender.com',
+  credentials: true
+}));
 
 app.get('/home', (req, res) => {
-    res.render('home')
+    res.send('home')
 })
 
 function wrapAsync(fn) {
