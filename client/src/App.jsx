@@ -29,7 +29,7 @@ function App() {
       <Toolbar />
       <main style={{ paddingTop: '45px', height: 'calc(100vh - 45px)' }}>
         <Routes>
-          <Route path='/groceries' element={<EnhancedTable user={user} />} />
+          <Route path='/' element={<EnhancedTable user={user} />} />
           <Route path='/login' element={<LoginForm setUser={setUser} />} />
           <Route path='/register' element={<RegisterForm setUser={setUser} />} />
           <Route path='/table' element={<EnhancedTable />} />
