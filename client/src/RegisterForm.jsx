@@ -19,7 +19,7 @@ export default function RegisterForm({ setUser }) {
             const response = await api.post("/api/register", formData);
             alert(response.data.message);
             setUser(response.data.user);
-            navigate("/groceries");
+            navigate("/");
         } catch (err) {
             console.error(err)
             alert("登録に失敗しました：" + err.response?.data?.error || err.message);
