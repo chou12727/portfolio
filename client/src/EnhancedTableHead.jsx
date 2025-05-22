@@ -65,7 +65,7 @@ export default function EnhancedTableHead({ onSelectAllClick, order, orderBy, nu
                     <TableCell
                         key={headCell.id}
                         align={headCell.numeric ? 'center' : 'left'}
-                        padding={headCell.disablePadding ? 'none' : 'normal'}
+                        padding={headCell.disablePadding ? 'none' : 'none'}
                         sortDirection={orderBy === headCell.id ? order : false}
                         sx={{
                             fontSize: {

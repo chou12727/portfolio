@@ -58,8 +58,7 @@ app.use((req, res, next) => {
     next()
 });
 app.use(cors({
-    // origin: 'http://localhost:5173',
-    origin: 'https://portfolio-client-bi16.onrender.com',
+    origin: ['http://localhost:5173', 'https://portfolio-client-bi16.onrender.com'],
     credentials: true
 }));
 

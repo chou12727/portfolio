@@ -25,8 +25,8 @@ export default function Grocery({ row, removeGrocery, updateGrocery, handleClick
     const [editData, setEditData] = useState({ name: row.name, quantity: row.quantity, expirationDate: toDateInputValue(row.expirationDate), note: row.note });
 
     const saveField = async (field) => {
-        setEditingField(null);
         await updateGrocery(row.id, editData);
+        setEditingField(null);
     };
     const cancelEdit = () => {
         setEditData({
@@ -90,9 +90,14 @@ export default function Grocery({ row, removeGrocery, updateGrocery, handleClick
                     sx={{
                         color: 'blue',
                         backgroundColor: '#f5f5f5',
-                        minWidth: 70,
-                        maxWidth: 150,
+                        minWidth: 30,
+                        maxWidth: 110,
                         whiteSpace: 'nowrap',
+                        fontSize: {
+                            xs: 10,
+                            sm: 12,
+                            md: 14,
+                        }
                     }}
                 >
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -114,14 +119,14 @@ export default function Grocery({ row, removeGrocery, updateGrocery, handleClick
                         ) : (
                             <>
                                 <Box onClick={() => setEditingField('name')}>{row.name}</Box>
-                                <IconButton onClick={() => setEditingField('name')} size="small"
+                                {/* <IconButton onClick={() => setEditingField('name')} size="small"
                                     sx={{
                                         opacity: hoverField === 'name' ? 1 : 0,
                                         transition: 'opacity 0.2s ease-in-out',
                                         ml: 1,
                                     }}>
                                     <EditIcon fontSize="small" />
-                                </IconButton>
+                                </IconButton> */}
 
                             </>
                         )}
@@ -134,9 +139,17 @@ export default function Grocery({ row, removeGrocery, updateGrocery, handleClick
                     sx={{
                         color: 'blue',
                         backgroundColor: '#f5f5f5',
-                        minWidth: 120,
-                        // maxWidth: 180,
+                        minWidth: 115,
+                        maxWidth: 115,
                         whiteSpace: 'nowrap',
+                        fontSize: {
+                            xs: 10,
+                            sm: 12,
+                            md: 14,
+                        },
+                        padding: '0 8px',
+                        boxSizing: 'border-box'
+
 
                     }}
                 >
@@ -151,12 +164,19 @@ export default function Grocery({ row, removeGrocery, updateGrocery, handleClick
                                     // label="Number"
                                     type="number"
                                     InputProps={{
-                                        sx: { fontSize: '0.9rem' }
+                                        sx: { fontSize: '0.8rem' }
                                     }}
                                     value={editData.quantity}
                                     onChange={(e) => setEditData({ ...editData, quantity: e.target.value })}
                                     size="small"
-                                    sx={{ width: 80, }}
+                                    sx={{
+                                        width: 80,
+                                        '& .MuiInputBase-root': {
+                                            height: 20,
+                                            fontSize: '0.8rem',
+                                            padding: '0px',
+                                        }
+                                    }}
                                 />
                                 {/* <input
                                     type="text"
@@ -167,24 +187,36 @@ export default function Grocery({ row, removeGrocery, updateGrocery, handleClick
                                 {/* <IconButton onClick={() => handleQuantityChange(1)} size="small">
                                     <AddIcon fontSize="small" />
                                 </IconButton> */}
-                                <IconButton onClick={() => saveField('quantity')} size="small">
-                                    <CheckIcon fontSize="small" />
+                                <IconButton onClick={() => saveField('quantity')} size="small"
+                                    sx={{
+                                        p: { xs: 0.5, sm: 0.7 },
+                                        ml: 0.5,
+                                    }}
+                                >
+                                    <CheckIcon fontSize="inherit"
+                                        sx={{
+                                            fontSize: { xs: '1rem', sm: '1.2rem' }
+                                        }}
+                                    />
                                 </IconButton>
                                 <IconButton onClick={cancelEdit} size="small">
-                                    <CloseIcon fontSize="small" />
+                                    <CloseIcon fontSize="small"
+                                        sx={{
+                                            fontSize: { xs: '1rem', sm: '1.2rem' }
+                                        }} />
                                 </IconButton>
                             </>
                         ) : (
                             <>
                                 <Box onClick={() => setEditingField('quantity')}>{row.quantity}</Box>
-                                <IconButton onClick={() => setEditingField('quantity')} size="small"
+                                {/* <IconButton onClick={() => setEditingField('quantity')} size="small"
                                     sx={{
                                         opacity: hoverField === 'quantity' ? 1 : 0,
                                         transition: 'opacity 0.2s ease-in-out',
                                         ml: 1,
                                     }}>
                                     <EditIcon fontSize="small" />
-                                </IconButton>
+                                </IconButton> */}
 
                             </>
                         )}
@@ -197,49 +229,84 @@ export default function Grocery({ row, removeGrocery, updateGrocery, handleClick
                     sx={{
                         color: 'blue',
                         backgroundColor: '#f5f5f5',
-                        minWidth: 160,
-                        maxWidth: 160,
+                        minWidth: 91,
+                        maxWidth: 91,
                         whiteSpace: 'nowrap',
+                        fontSize: {
+                            xs: 10,
+                            sm: 12,
+                            md: 14,
+                        },
+                        padding:0
 
                     }}
                 >
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         {editingField === 'expirationDate' ? (
                             <>
-                                <IconButton onClick={() => handleDateChange(-1)} size="small">
+                                {/* <IconButton onClick={() => handleDateChange(-1)} size="small">
                                     <RemoveIcon fontSize="small" />
-                                </IconButton>
-                                <input
+                                </IconButton> */}
+                                <TextField
+                                    type="date"
+                                    size="small"
+                                    value={editData.expirationDate}
+                                    onChange={(e) => {
+                                        setEditData({ ...editData, expirationDate: e.target.value });
+
+                                    }}
+                                    onBlur={() => saveField('expirationDate')}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                    sx={{
+                                        maxWidth: 140,
+                                        fontSize: '0.8rem',
+                                        '& .MuiInputBase-input': {
+                                            padding: '5px 1px',
+                                            fontSize: '0.5rem',     
+                                            padding: '0px',
+                                        }
+                                    }}
+                                    
+                                />
+                                {/* <input
                                     type="date"
                                     value={editData.expirationDate}
                                     onChange={(e) => setEditData({ ...editData, expirationDate: e.target.value })}
-                                />
-                                <IconButton onClick={() => handleDateChange(1)} size="small">
+                                /> */}
+                                {/* <IconButton onClick={() => handleDateChange(1)} size="small">
                                     <AddIcon fontSize="small" />
-                                </IconButton>
-                                <IconButton onClick={() => saveField('expirationDate')} size="small">
-                                    <CheckIcon fontSize="small" />
-                                </IconButton>
+                                </IconButton> */}
+                                {/* <IconButton onClick={() => saveField('expirationDate')} size="small">
+                                    <CheckIcon fontSize="small"
+                                        sx={{
+                                            fontSize: { xs: '1rem', sm: '1.2rem' }
+                                        }} />
+                                </IconButton> */}
                                 <IconButton onClick={cancelEdit} size="small">
-                                    <CloseIcon fontSize="small" />
+                                    <CloseIcon fontSize="small"
+                                        sx={{
+                                            fontSize: { xs: '1rem', sm: '1.2rem' }
+                                        }} />
                                 </IconButton>
                             </>
                         ) : (
                             <>
                                 <Box onClick={() => setEditingField('expirationDate')}>{row.expirationDate ? new Date(row.expirationDate).toLocaleDateString('ja-JP', {
-                                    year: 'numeric',
+                                    // year: 'numeric',
                                     month: '2-digit',
                                     day: '2-digit',
                                 }) : ''}
                                 </Box>
-                                <IconButton onClick={() => setEditingField('expirationDate')} size="small"
+                                {/* <IconButton onClick={() => setEditingField('expirationDate')} size="small"
                                     sx={{
                                         opacity: hoverField === 'expirationDate' ? 1 : 0,
                                         transition: 'opacity 0.2s ease-in-out',
                                         ml: 1,
                                     }}>
                                     <EditIcon fontSize="small" />
-                                </IconButton>
+                                </IconButton> */}
 
                             </>
                         )}
@@ -255,18 +322,35 @@ export default function Grocery({ row, removeGrocery, updateGrocery, handleClick
                     sx={{
                         color: 'blue',
                         backgroundColor: '#f5f5f5',
-                        minWidth: 150,
+                        minWidth: 60,
                         maxWidth: 150,
                         whiteSpace: 'nowrap',
+                        fontSize: {
+                            xs: 10,
+                            sm: 12,
+                            md: 14,
+                        }
                     }}
                 >
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: "center" }} >
                         {editingField === 'note' ? (
                             <>
-                                <input
+                                <TextField
                                     type="text"
+                                    InputProps={{
+                                        sx: { fontSize: '0.8rem' }
+                                    }}
                                     value={editData.note}
                                     onChange={(e) => setEditData({ ...editData, note: e.target.value })}
+                                    size="small"
+                                    sx={{
+                                        width: 80,
+                                        '& .MuiInputBase-root': {
+                                            height: 20,
+                                            fontSize: '0.8rem',
+                                            padding: '0px',
+                                        }
+                                    }}
                                 />
                                 <IconButton onClick={() => saveField('note')} size="small">
                                     <CheckIcon fontSize="small" />
@@ -299,7 +383,7 @@ export default function Grocery({ row, removeGrocery, updateGrocery, handleClick
                     sx={{
                         color: 'blue',
                         backgroundColor: '#f5f5f5',
-                        minWidth: 150,
+                        minWidth: 30,
                         maxWidth: 150,
                         whiteSpace: 'nowrap',
                     }}
